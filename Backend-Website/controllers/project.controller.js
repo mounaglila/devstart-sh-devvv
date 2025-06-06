@@ -21,8 +21,8 @@ const generateProject = async (req, res) => {
         password
     };
 
-    const scriptPath = backend ? path.join(__dirname, "Backend", backend, `run-${backend}-${TypeDB}.bat`) : null;
-    const scriptPath2 = frontend ? path.join(__dirname, "Frontend", frontend, `run-${frontend}.bat`) : null;
+    const scriptPath = backend ? path.join(__dirname, "Backend", backend, `run-${backend}-${TypeDB}.sh`) : null;
+    const scriptPath2 = frontend ? path.join(__dirname, "Frontend", frontend, `run-${frontend}.sh`) : null;
 
     const uniqueId = Date.now() + '-' + Math.random().toString(36).substring(2, 10);
     const secret = process.env.DOWNLOAD_SECRET || 'supersecret';
