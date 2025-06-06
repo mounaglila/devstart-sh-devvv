@@ -55,7 +55,7 @@ const generateProject = async (req, res) => {
                 return reject(new Error(`Backend script not found: ${scriptPath}`));
             }
             // Pass parameters to backend script
-            const command = `sh "${scriptPath}" "${host || ''}" "${dbName || ''}" "${username || ''}" "${password || ''}" "${port || ''}" "${projectDir}" > log_backend_${uniqueId}.txt 2>&1`;
+            const command = `bash "${scriptPath}" "${host || ''}" "${dbName || ''}" "${username || ''}" "${password || ''}" "${port || ''}" "${projectDir}" > log_backend_${uniqueId}.txt 2>&1`;
             console.log(`Executing backend command: ${command}`);
             exec(command, (err, stdout, stderr) => {
                 const logFilePath = path.join(process.cwd(), `log_backend_${uniqueId}.txt`);
@@ -96,7 +96,7 @@ const generateProject = async (req, res) => {
             const dbPass = password || ''; // Be cautious about command line passwords
 
             // Arguments passed: 1=projectDir, 2=dbHost, 3=databaseName, 4=dbUser, 5=dbPass
-            const command = `sh "${scriptPath2}" "${projectDir}" "${dbHost}" "${databaseName}" "${dbUser}" "${dbPass}" > log_frontend_${uniqueId}.txt 2>&1`;
+            const command = `bash "${scriptPath2}" "${projectDir}" "${dbHost}" "${databaseName}" "${dbUser}" "${dbPass}" > log_frontend_${uniqueId}.txt 2>&1`;
             // --- End Modification --- 
 
             console.log(`Executing frontend command: ${command} in CWD: ${frontendCwd}`);
