@@ -13,7 +13,7 @@ PORT="$6"
 scriptDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 projectDir="$scriptDir/angular-project"
 projectName="angular-project"
-FRONTEND_DIR="$ROOT_DIR%"
+FRONTEND_DIR="$ROOT_DIR"
 # API et fichier temporaire
 
 jsonFile="$(mktemp)"
