@@ -19,7 +19,7 @@ FRONTEND_DIR="$ROOT_DIR%"
 jsonFile="$(mktemp)"
 echo "{\"host\":\"$host\",\"dbName\":\"$DdbName\",\"username\":\"$USERNAME\",\"password\":\"$PASSWORD\"}" > "$jsonFile"
 
-apiUrl="http://localhost:3000/api/tablenames"
+apiUrl="http://localhost:5000/api/tablenames"
 responseFile="/tmp/tablenames.json"
 # Récupération silencieuse des données
 curl -s -X POST -H "Content-Type: application/json" -d @"$jsonFile" "$apiUrl" > /tmp/tablenames.json
@@ -41,28 +41,25 @@ if ! jq . "$responseFile" >/dev/null 2>&1; then
     exit 1
 fi
 
-# Extraire les noms de tables
-items=$(jq -r '.[]' "$jsonFile" | sed 's/[\[\]_-]//g' | tr '\n' ' ')
+# Extraire les noms de tables depuis la réponse
+items=$(jq -r '.[]' "$responseFile" | sed 's/[\[\]_-]//g' | tr '\n' ' ')
 
 # Vérification de la liste extraite
 if [ -z "$items" ]; then
     echo "Failed to parse table names from the API!"
-    rm "$jsonFile"
+    rm "$responseFile"
     exit 1
 fi
 
 # Nettoyage
-rm "$jsonFile"
+rm "$responseFile"
 
 # Créer le projet Angular si nécessaire
 if [ ! -d "$projectDir" ]; then
     echo "Creating Angular project..."
     ng new "$projectName" --routing --style=scss --skip-install --defaults
     cd "$projectDir"
-else
-    echo "Angular project already exists!"
-    cd "$projectDir"
-fi
+
 
 # Create styles.scss
 cat > src/styles.scss << 'EOL'
@@ -1011,6 +1008,3 @@ mv "$projectDir" "$FRONTEND_DIR"
 
 echo "===== All components and shared service generated successfully! ====="
 
-# Start the Angular server
-echo "Starting the server..."
-cd "$FRONTEND_DIR"
