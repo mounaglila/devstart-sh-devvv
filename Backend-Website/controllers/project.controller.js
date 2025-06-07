@@ -24,7 +24,7 @@ const generateProject = async (req, res) => {
     const scriptPath = backend ? path.join(__dirname, "Backend", backend, `run-${backend}-${TypeDB}.sh`) : null;
     const scriptPath2 = frontend ? path.join(__dirname, "Frontend", frontend, `run-${frontend}.sh`) : null;
 
-    const uniqueId = Date.now() + '-' + Math.random().toString(36).substring(2, 10);
+    const uniqueId = `${Date. now()}-${crypto. randomBytes(4) . toString( 'hex' )}`.replace(/[^a-zA-Z0-9 _-]/g, '');
     const secret = process.env.DOWNLOAD_SECRET || 'supersecret';
     const token = crypto.createHmac('sha256', secret).update(uniqueId).digest('hex');
     const generatedBaseDir = path.join(__dirname, 'generated'); 
